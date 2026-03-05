@@ -1,0 +1,121 @@
+================================================================================
+  INDICATORS OF COMPROMISE (IOC) — TrickBot Malware Investigation
+================================================================================
+  Incident Reference : INC-2024-0019
+  Analyst            : Gbemisola Faith Akinlabi
+  Date Extracted     : March 2024
+  Source             : PCAP Network Traffic Analysis (Wireshark)
+  Malware Family     : TrickBot (Trojan)
+  Confidence         : High
+================================================================================
+
+
+--------------------------------------------------------------------------------
+MALICIOUS IP ADDRESSES
+--------------------------------------------------------------------------------
+185.244.41.29
+  Role        : Malware delivery server
+  Protocol    : HTTP (port 80)
+  Activity    : Served malicious payload (ooiwy.pdf) via HTTP GET request
+  Disposition : Block at perimeter firewall and proxy
+
+103.148.41.195
+  Role        : Command and Control (C2) server
+  Protocol    : HTTP (port 80)
+  Activity    : Received POST beacon with victim system reconnaissance data
+  Disposition : Block at perimeter firewall and proxy
+
+
+--------------------------------------------------------------------------------
+SUSPICIOUS DOMAINS
+--------------------------------------------------------------------------------
+  None identified in this PCAP. Communication occurred directly over IP.
+  Monitor for newly registered domains resolving to 185.244.41.29 and 103.148.41.195.
+
+
+--------------------------------------------------------------------------------
+SUSPICIOUS URLS / NETWORK PATHS
+--------------------------------------------------------------------------------
+http://185.244.41.29/ooiwy.pdf
+  Method      : GET
+  User-Agent  : curl/7.55.1
+  Description : URL used to deliver the TrickBot DLL payload to the infected host
+
+
+--------------------------------------------------------------------------------
+MALICIOUS FILES
+--------------------------------------------------------------------------------
+ooiwy.pdf
+  True Format : Windows DLL (Portable Executable)
+  True Name   : ooiwdy.dll
+  File Type   : .dll (Dynamic Link Library)
+  Delivered As: .pdf (extension spoofing / masquerading)
+  Signature   : 4D 5A (MZ header — Windows PE)
+  Malware     : TrickBot Trojan
+
+ooiwdy.dll
+  Description : True filename of the malicious payload identified via binary analysis
+  File Type   : Windows Dynamic Link Library
+  Signature   : 4D 5A (MZ header — Windows PE)
+  Malware     : TrickBot Trojan
+
+
+--------------------------------------------------------------------------------
+FILE HASHES
+--------------------------------------------------------------------------------
+  File        : ooiwy.pdf / ooiwdy.dll
+
+  MD5         : 4e4ae70b6346eae111e31716dc76bc23
+  SHA-1       : 1e7b9af799048e4112d2468323c5c147e20558f9
+  SHA-256     : f25a780095730701efac67e9d5b84bc289afea56d96d8aff8a44af69ae606404
+
+
+--------------------------------------------------------------------------------
+FILE SIGNATURE
+--------------------------------------------------------------------------------
+  Hex Bytes   : 4D 5A
+  ASCII       : MZ
+  Meaning     : Windows Portable Executable (PE) header
+  Significance: File was disguised as a PDF but confirmed as a Windows executable
+
+
+--------------------------------------------------------------------------------
+INFECTED HOST
+--------------------------------------------------------------------------------
+  Internal IP   : 10.8.19.101
+  Hostname      : DESKTOP-M1TFHB6
+  MAC Address   : 00-08-02-1C-47-AE
+  OS            : Windows (confirmed via SMB and NTLMSSP traffic)
+  User Account  : monica.steele
+  Status        : Confirmed infected — immediate isolation recommended
+
+
+--------------------------------------------------------------------------------
+SUSPICIOUS NETWORK BEHAVIOUR
+--------------------------------------------------------------------------------
+  User-Agent    : curl/7.55.1
+  Significance  : Non-browser User-Agent observed on a user workstation;
+                  indicates scripted or automated file download — not legitimate
+                  user activity. Consistent with dropper or script execution.
+
+  HTTP POST     : Source 10.8.19.101 → Destination 103.148.41.195
+  Content       : Structured victim host data (system info, user details)
+  Significance  : Confirmed C2 beacon; malware successfully phoned home
+
+
+--------------------------------------------------------------------------------
+RECOMMENDED ACTIONS
+--------------------------------------------------------------------------------
+  1. Block 185.244.41.29 and 103.148.41.195 at all network egress points
+  2. Isolate host 10.8.19.101 (DESKTOP-M1TFHB6) immediately
+  3. Disable and reset credentials for account: monica.steele
+  4. Scan all endpoints for file hashes listed above
+  5. Hunt for curl/7.55.1 User-Agent strings in proxy and web gateway logs
+  6. Add file hashes to EDR blocklist and threat intelligence platform
+  7. Alert on HTTP POST requests from internal workstations to external IPs
+     containing structured host data patterns
+
+
+================================================================================
+  END OF IOC REPORT — INC-2024-0019
+================================================================================

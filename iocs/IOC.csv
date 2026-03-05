@@ -1,0 +1,16 @@
+Indicator_Type,Indicator_Value,Description,Confidence_Level,Category,Source,Incident_Reference
+IP,185.244.41.29,External server used to deliver TrickBot DLL payload via HTTP GET request,High,Malicious IP,PCAP Network Traffic Analysis,INC-2024-0019
+IP,103.148.41.195,Suspected TrickBot command-and-control server — received POST beacon with victim host data,High,Malicious IP,PCAP Network Traffic Analysis,INC-2024-0019
+IP,10.8.19.101,Internal infected workstation — source of malicious download and C2 communication,High,Infected Host,PCAP Network Traffic Analysis,INC-2024-0019
+Hostname,DESKTOP-M1TFHB6,Hostname of the infected Windows workstation identified via DHCP and SMB traffic,High,Infected Host,PCAP Network Traffic Analysis,INC-2024-0019
+MAC,00-08-02-1C-47-AE,MAC address of infected host NIC mapped via ARP filter to IP 10.8.19.101,High,Infected Host,PCAP Network Traffic Analysis,INC-2024-0019
+User_Account,monica.steele,Windows user account active on infected host — identified via NTLMSSP authentication packets,High,Compromised Account,PCAP Network Traffic Analysis,INC-2024-0019
+File,ooiwy.pdf,Malicious payload delivered via HTTP GET — disguised as PDF but confirmed as Windows PE executable,High,Malicious File,PCAP HTTP Object Extraction,INC-2024-0019
+File,ooiwdy.dll,True filename of malicious payload — Windows Dynamic Link Library (TrickBot Trojan),High,Malicious File,Binary Signature Analysis (GHex),INC-2024-0019
+Hash_MD5,4e4ae70b6346eae111e31716dc76bc23,MD5 hash of the TrickBot DLL payload (ooiwy.pdf / ooiwdy.dll),High,File Hash,VirusTotal,INC-2024-0019
+Hash_SHA1,1e7b9af799048e4112d2468323c5c147e20558f9,SHA-1 hash of the TrickBot DLL payload (ooiwy.pdf / ooiwdy.dll),High,File Hash,VirusTotal,INC-2024-0019
+Hash_SHA256,f25a780095730701efac67e9d5b84bc289afea56d96d8aff8a44af69ae606404,SHA-256 hash of the TrickBot DLL payload (ooiwy.pdf / ooiwdy.dll),High,File Hash,VirusTotal,INC-2024-0019
+File_Signature,4D 5A,MZ magic bytes confirming ooiwy.pdf is a Windows Portable Executable despite PDF extension,High,File Signature,Binary Signature Analysis (GHex),INC-2024-0019
+URL,http://185.244.41.29/ooiwy.pdf,Full URL used to deliver the TrickBot payload to the infected host via HTTP GET,High,Malicious URL,PCAP Network Traffic Analysis,INC-2024-0019
+User_Agent,curl/7.55.1,Non-browser User-Agent string used during payload download — indicates scripted or automated execution,High,Suspicious Behaviour,PCAP HTTP Header Analysis,INC-2024-0019
+Malware_Family,TrickBot,Trojan malware family confirmed via VirusTotal multi-engine scan — known for credential theft and ransomware staging,High,Malware Classification,VirusTotal,INC-2024-0019
