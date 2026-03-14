@@ -192,6 +192,22 @@ All extracted IOCs from this investigation are stored in the `iocs/` directory:
 
 ---
 
+## PCAP Evidence File
+
+The original network capture used in this investigation is included in the repository and can be opened directly in Wireshark to independently reproduce every finding documented here.
+
+| Field | Details |
+|---|---|
+| **File** | `evidence/trickbot-infection-traffic.pcap` |
+| **Size** | 15 MB |
+| **Format** | Wireshark PCAP — microsecond timestamps, Ethernet capture |
+| **Tool Required** | [Wireshark](https://www.wireshark.org/) (free) |
+| **Purpose** | Reproduce the full investigation — apply the filters in `queries/wireshark-filters.md` to walk through the analysis step by step |
+
+> ⚠️ **Note:** This PCAP contains network traffic associated with a TrickBot malware infection captured in a controlled academic environment. It is published for educational and cybersecurity research purposes only. Do not execute any extracted files outside of an isolated sandbox.
+
+---
+
 ## Repository Structure
 
 ```
@@ -207,7 +223,8 @@ SOC-Incident-TrickBot/
 │   ├── 05-command-control-communication.png
 │   └── 06-tcp-stream-analysis.png
 │
-├── evidence/                 # Extracted artefacts from the PCAP (malicious file, raw exports)
+├── evidence/                 # Raw PCAP capture file and extracted artefacts from the investigation
+│   └── trickbot-infection-traffic.pcap   # ⚠️ Original network capture — open in Wireshark to reproduce findings
 │
 ├── iocs/                     # Structured indicator of compromise files
 │   ├── IOC.txt               # Plaintext IOC list
